@@ -1,0 +1,46 @@
+<html>
+{% load static %}
+<head>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="{% static 'https://www.gstatic.com/charts/loader.js' %}"></script>
+    <script type="text/javascript">
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['bar'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            //{{values|safe}} : list of list containing points for the chart
+            var data = google.visualization.arrayToDataTable({{ values| safe}});
+
+        // Set chart options
+        var options = {
+            title: {{ h_title| safe}} +' vs. ' + {{ v_title | safe }},
+        hAxis: { title: { { h_title | safe } } },
+        vAxis: { title: { { v_title | safe } } },
+        legend: { position: 'bottom' },
+        isStacked: true,
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.charts.Bar(document.getElementById('chart_div'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+    </script>
+</head>
+
+<body>
+    <div class="container" style="margin: 40px">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center">
+                <h2>Django Google Bar Chart Example Tutorial - Tuts-Stations.com</h2>
+                <div id="chart_div" style="width: 900px; height: 500px; display: inline-block"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
